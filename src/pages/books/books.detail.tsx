@@ -1,3 +1,5 @@
+import { BookDetailContainer } from '../../containers/books';
+
 export default function Detail() {
-  return <div>Detail</div>;
+  return <BookDetailContainer />;
 }

@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
-import { BookList } from './pages/books';
+import { BookList, BookCreate, BookDetail, BookUpdate } from './pages/books';
 import Login from './pages/Login';
 import { theme } from './config/theme';
 
@@ -9,6 +9,18 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <BookList />,
+  },
+  {
+    path: '/detail/:id',
+    element: <BookDetail />,
+  },
+  {
+    path: '/create',
+    element: <BookCreate />,
+  },
+  {
+    path: '/update/:id',
+    element: <BookUpdate />,
   },
   {
     path: '/login',
