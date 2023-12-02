@@ -1,14 +1,14 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
-import Home from './pages/Home';
+import { BookList } from './pages/books';
 import Login from './pages/Login';
 import { theme } from './config/theme';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <BookList />,
   },
   {
     path: '/login',
