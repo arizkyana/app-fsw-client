@@ -7,6 +7,13 @@ export interface IBooks {
   copies_available: number;
   genre: string;
   isbn: string;
-  updatedBy?: string;
-  createdBy?: string;
+  updated_by?: string;
+  updated_at?: string;
+  created_by?: string;
+  created_at: string;
+}
+
+export interface IResponseList<T> {
+  results: T;
+  total: number;
 }

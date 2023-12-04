@@ -71,6 +71,7 @@ export default function List() {
         <TableCell>{record.genre}</TableCell>
         <TableCell>{record.published_year}</TableCell>
         <TableCell align="right">{record.total_copies}</TableCell>
+        <TableCell>{record.created_at}</TableCell>
       </TableRow>
     ));
   };
@@ -103,6 +104,7 @@ export default function List() {
               <TableCell>Genre</TableCell>
               <TableCell>Published Year</TableCell>
               <TableCell align="right">Available</TableCell>
+              <TableCell>Created At</TableCell>
               {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
             </TableRow>
           </TableHead>

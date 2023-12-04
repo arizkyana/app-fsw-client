@@ -19,6 +19,9 @@ export default function useAction() {
         'http://localhost:8000/api/books',
         {
           params,
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
         }
       );
       setBooks(response.data.data);
