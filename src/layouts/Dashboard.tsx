@@ -14,6 +14,8 @@ const SidebarStyled = styled.aside`
   left: 0;
   height: 100%;
   width: 250px;
+  padding: 1rem;
+  z-index: 20;
 `;
 const MainStyled = styled.main`
   height: 100%;
@@ -21,11 +23,17 @@ const MainStyled = styled.main`
   padding-left: 250px;
 `;
 
+const MainPageStyled = styled.div`
+  padding: 1rem;
+`;
+
 export default function Dashboard({ children }: IDashboardProps) {
   return (
     <DashboardContainerStyled>
       <SidebarStyled>tess</SidebarStyled>
-      <MainStyled>{children}</MainStyled>
+      <MainStyled>
+        <MainPageStyled>{children}</MainPageStyled>
+      </MainStyled>
     </DashboardContainerStyled>
   );
 }

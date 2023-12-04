@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import {
+  Button,
   CircularProgress,
   Pagination,
   Paper,
@@ -15,8 +16,14 @@ import useAction from './books.hooks';
 import { IBooks } from './books.types';
 import { ChangeEvent } from 'react';
 
-const HomeContainer = styled.div`
-  padding: 1rem;
+import CommonPage from '../../components/common-page/common-page';
+import { Link } from 'react-router-dom';
+
+const HeaderElementStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 export default function List() {
@@ -69,25 +76,24 @@ export default function List() {
   };
 
   return (
-    <HomeContainer>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <h1>Books Management</h1>
-        <div>
+    <CommonPage
+      title="Books"
+      actionElement={
+        <HeaderElementStyled>
           <TextField
             name="search"
-            placeholder="Search book title"
-            size="small"
-            prefix="icon"
+            placeholder="Search books title or author"
             onChange={handleSearch}
+            size="small"
           />
-        </div>
-      </div>
+          <Link to={'/create'}>
+            <Button type="button" variant="contained">
+              Create new
+            </Button>
+          </Link>
+        </HeaderElementStyled>
+      }
+    >
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -115,6 +121,6 @@ export default function List() {
           });
         }}
       />
-    </HomeContainer>
+    </CommonPage>
   );
 }
