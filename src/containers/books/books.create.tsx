@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { CloudUpload } from '@mui/icons-material';
 import axios from 'axios';
 import { LoadingButton } from '@mui/lab';
+import { useNavigate } from 'react-router-dom';
 
 const VisuallyHiddenInput = styled('input')`
   display: none;
@@ -18,6 +19,7 @@ interface IFileItem {
 }
 
 export default function Create() {
+  const navigate = useNavigate();
   const [formValues, setFormValues] = useState({});
   const [loadingCover, setLoadingCover] = useState<boolean>(false);
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
@@ -25,23 +27,15 @@ export default function Create() {
 
   const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();
-    console.log('values > ', {
-      ...formValues,
-      cover: fileItem,
-    });
     try {
       setLoadingSubmit(true);
       const payload = { ...formValues, cover: fileItem };
-      const response = await axios.post(
-        'http://localhost:8000/api/books',
-        payload,
-        {
-          headers: {
-            Authorization: localStorage.getItem('token'),
-          },
-        }
-      );
-      console.log('response submit > ', response);
+      await axios.post('http://localhost:8000/api/books', payload, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      navigate(-1);
     } catch (error) {
       console.log('error > ', error);
     } finally {

@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import styled from '@emotion/styled';
+import { Avatar, Box, Divider, MenuItem, MenuList, Stack } from '@mui/material';
 
 interface IDashboardProps extends PropsWithChildren {}
 
@@ -14,7 +15,7 @@ const SidebarStyled = styled.aside`
   left: 0;
   height: 100%;
   width: 250px;
-  padding: 1rem;
+
   z-index: 20;
 `;
 const MainStyled = styled.main`
@@ -28,9 +29,31 @@ const MainPageStyled = styled.div`
 `;
 
 export default function Dashboard({ children }: IDashboardProps) {
+  const handleLogout = () => {
+    const c = confirm('are you sure want to logout?');
+    if (c) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+  };
+
   return (
     <DashboardContainerStyled>
-      <SidebarStyled>tess</SidebarStyled>
+      <SidebarStyled>
+        <Box sx={{ position: 'relative', height: '100%' }}>
+          <Box sx={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}>
+            <MenuList>
+              <Divider />
+              <MenuItem sx={{ py: 1 }} onClick={handleLogout}>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <Avatar>H</Avatar>
+                  <Box>Username</Box>
+                </Stack>
+              </MenuItem>
+            </MenuList>
+          </Box>
+        </Box>
+      </SidebarStyled>
       <MainStyled>
         <MainPageStyled>{children}</MainPageStyled>
       </MainStyled>

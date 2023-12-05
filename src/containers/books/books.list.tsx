@@ -18,6 +18,7 @@ import { ChangeEvent } from 'react';
 
 import CommonPage from '../../components/common-page/common-page';
 import { Link } from 'react-router-dom';
+import { parseISO, format } from 'date-fns';
 
 const HeaderElementStyled = styled.div`
   display: flex;
@@ -27,11 +28,6 @@ const HeaderElementStyled = styled.div`
 `;
 
 export default function List() {
-  // const handleSignOut = () => {
-  //   localStorage.removeItem('token');
-  //   window.location.reload();
-  // };
-
   const { books, loading, setParams, params, meta } = useAction();
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +67,9 @@ export default function List() {
         <TableCell>{record.genre}</TableCell>
         <TableCell>{record.published_year}</TableCell>
         <TableCell align="right">{record.total_copies}</TableCell>
-        <TableCell>{record.created_at}</TableCell>
+        <TableCell>
+          {format(parseISO(record.created_at), 'dd/MM/yyyy HH:mm:ss')}
+        </TableCell>
       </TableRow>
     ));
   };
@@ -99,13 +97,14 @@ export default function List() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Author</TableCell>
-              <TableCell>Genre</TableCell>
-              <TableCell>Published Year</TableCell>
-              <TableCell align="right">Available</TableCell>
-              <TableCell>Created At</TableCell>
-              {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
+              <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Author</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Genre</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Published Year</TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                Available
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Created At</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{renderContent()}</TableBody>
