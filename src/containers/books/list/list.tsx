@@ -1,9 +1,10 @@
-import styled from '@emotion/styled';
 import {
+  Box,
   Button,
   CircularProgress,
   Pagination,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -11,16 +12,16 @@ import {
   TableHead,
   TableRow,
   TextField,
+  styled,
 } from '@mui/material';
-import useAction from './books.hooks';
-import { IBooks } from './books.types';
-import { ChangeEvent } from 'react';
+import useAction from './list.hooks';
+import { IBooks } from '../books.types';
 
-import CommonPage from '../../components/common-page/common-page';
-import { Link } from 'react-router-dom';
+import CommonPage from '../../../components/common-page/common-page';
+import { Link, useNavigate } from 'react-router-dom';
 import { parseISO, format } from 'date-fns';
 
-const HeaderElementStyled = styled.div`
+const HeaderElementStyled = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,15 +29,18 @@ const HeaderElementStyled = styled.div`
 `;
 
 export default function List() {
-  const { books, loading, setParams, params, meta } = useAction();
+  const navigate = useNavigate();
+  const {
+    books,
+    loading,
+    setParams,
+    params,
+    meta,
+    handleEdit,
+    handleRemove,
+    handleSearch,
+  } = useAction();
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setParams({
-      ...params,
-      search: value,
-    });
-  };
   const renderLoading = () => {
     return (
       <TableCell colSpan={5}>
@@ -60,15 +64,54 @@ export default function List() {
     return books?.map((record: IBooks) => (
       <TableRow
         key={record.id}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        sx={{
+          '&:last-child td, &:last-child th': { border: 0 },
+          '&:hover': {
+            cursor: 'pointer',
+          },
+          position: 'relative',
+        }}
+        onClick={() => navigate(`/detail/${record.id}`)}
       >
-        <TableCell component="th">{record.title}</TableCell>
-        <TableCell>{record.author}</TableCell>
+        <TableCell component="th">
+          <Box sx={{ mb: 1 }}>{record.title}</Box>
+          <Box>
+            <strong>Author:</strong> {record.author}
+          </Box>
+        </TableCell>
+
         <TableCell>{record.genre}</TableCell>
         <TableCell>{record.published_year}</TableCell>
         <TableCell align="right">{record.total_copies}</TableCell>
         <TableCell>
-          {format(parseISO(record.created_at), 'dd/MM/yyyy HH:mm:ss')}
+          {format(parseISO(`${record.created_at}`), 'dd/MM/yyyy HH:mm:ss')}
+        </TableCell>
+        <TableCell>
+          <Stack
+            direction={'row'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            sx={{
+              height: '100%',
+            }}
+            gap={1}
+          >
+            <Button
+              type="button"
+              variant="contained"
+              color="error"
+              onClick={(e) => handleRemove(e, record)}
+            >
+              Remove
+            </Button>
+            <Button
+              type="button"
+              variant="outlined"
+              onClick={(e) => handleEdit(e, record)}
+            >
+              Edit
+            </Button>
+          </Stack>
         </TableCell>
       </TableRow>
     ));
@@ -98,13 +141,14 @@ export default function List() {
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Author</TableCell>
+
               <TableCell sx={{ fontWeight: 'bold' }}>Genre</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Published Year</TableCell>
               <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                 Available
               </TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Created At</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{renderContent()}</TableBody>

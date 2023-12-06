@@ -1,5 +1,13 @@
 import { BookUpdateContainer } from '../../containers/books';
+import { Dashboard } from '../../layouts';
+import PrivateProvider from '../../providers/PrivateProvider';
 
 export default function Update() {
-  return <BookUpdateContainer />;
+  return (
+    <PrivateProvider>
+      <Dashboard>
+        <BookUpdateContainer />
+      </Dashboard>
+    </PrivateProvider>
+  );
 }

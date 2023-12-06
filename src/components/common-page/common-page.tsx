@@ -1,14 +1,8 @@
-import { ReactNode } from 'react';
 import { CommonPageContainer, CommonPageHeader } from './common-page.styled';
-import { Box, BoxProps, Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ArrowBack } from '@mui/icons-material';
-
-export interface ICommonPageProps extends BoxProps {
-  actionElement?: ReactNode;
-  title?: string;
-  withBack?: boolean;
-}
+import { ICommonPageProps } from './common-page.types';
 
 export default function CommonPage({
   children,

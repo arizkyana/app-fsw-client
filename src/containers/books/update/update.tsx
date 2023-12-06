@@ -1,79 +1,28 @@
 import { Box, TextField, Switch, Stack, styled } from '@mui/material';
-import CommonPage from '../../components/common-page/common-page';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import CommonPage from '../../../components/common-page/common-page';
 import { CloudUpload } from '@mui/icons-material';
-import axios from 'axios';
 import { LoadingButton } from '@mui/lab';
-import { useNavigate } from 'react-router-dom';
+import useUpdate from './update.hooks';
 
 const VisuallyHiddenInput = styled('input')`
   display: none;
 `;
 
-interface IFileItem {
-  url: string;
-  secure_url: string;
-  width?: number;
-  height?: number;
-  resourceType?: string;
-}
-
-export default function Create() {
-  const navigate = useNavigate();
-  const [formValues, setFormValues] = useState({});
-  const [loadingCover, setLoadingCover] = useState<boolean>(false);
-  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
-  const [fileItem, setFileItem] = useState<IFileItem>();
-
-  const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    try {
-      setLoadingSubmit(true);
-      const payload = { ...formValues, cover: fileItem };
-      await axios.post('http://localhost:8000/api/books', payload, {
-        headers: {
-          Authorization: localStorage.getItem('token'),
-        },
-      });
-      navigate(-1);
-    } catch (error) {
-      console.log('error > ', error);
-    } finally {
-      setLoadingSubmit(false);
-    }
-  };
-
-  const handleUploadCover = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      try {
-        setLoadingCover(true);
-        const formData = new FormData();
-        formData.append('cover', files[0]);
-
-        const response = await axios.post(
-          'http://localhost:8000/api/books/upload',
-          formData,
-          {
-            headers: {
-              Authorization: localStorage.getItem('token'),
-            },
-          }
-        );
-        setFileItem(response.data.data);
-      } catch (error) {
-        console.log('error > ', error);
-      } finally {
-        setLoadingCover(false);
-      }
-    }
-  };
-
+export default function Update() {
+  const {
+    formValues,
+    handleSubmit,
+    handleUploadCover,
+    loadingCover,
+    loadingSubmit,
+    setFormValues,
+    fileItem,
+  } = useUpdate();
   return (
     <CommonPage
       withBack
       component={'form'}
-      title="Create new Book"
+      title="Update Book"
       actionElement={
         <LoadingButton
           type="submit"
@@ -101,6 +50,11 @@ export default function Create() {
               title: e.target.value,
             })
           }
+          variant="filled"
+          value={formValues?.title}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextField
           name="author"
@@ -113,6 +67,11 @@ export default function Create() {
               author: e.target.value,
             })
           }
+          value={formValues?.author}
+          variant="filled"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextField
           name="isbn"
@@ -125,6 +84,11 @@ export default function Create() {
               isbn: e.target.value,
             })
           }
+          value={formValues?.isbn}
+          variant="filled"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextField
           name="published_year"
@@ -138,6 +102,11 @@ export default function Create() {
               published_year: e.target.value,
             })
           }
+          value={formValues?.published_year}
+          variant="filled"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextField
           name="genre"
@@ -150,6 +119,11 @@ export default function Create() {
               genre: e.target.value,
             })
           }
+          value={formValues?.genre}
+          variant="filled"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextField
           name="total_copies"
@@ -160,9 +134,14 @@ export default function Create() {
           onChange={(e) =>
             setFormValues({
               ...formValues,
-              total_copies: e.target.value,
+              total_copies: Number(e.target.value),
             })
           }
+          value={formValues?.total_copies}
+          variant="filled"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextField
           name="copies_available"
@@ -173,9 +152,14 @@ export default function Create() {
           onChange={(e) =>
             setFormValues({
               ...formValues,
-              copies_available: e.target.value,
+              copies_available: Number(e.target.value),
             })
           }
+          value={formValues?.copies_available}
+          variant="filled"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <LoadingButton
           component="label"
@@ -209,9 +193,10 @@ export default function Create() {
               onChange={(e) =>
                 setFormValues({
                   ...formValues,
-                  published: e.target.checked,
+                  published: Boolean(e.target.checked),
                 })
               }
+              checked={formValues?.published}
             />
           </Stack>
         </Box>
