@@ -12,7 +12,6 @@ import {
   TableHead,
   TableRow,
   TextField,
-  styled,
 } from '@mui/material';
 import useAction from './list.hooks';
 import { IBooks } from '../books.types';
@@ -20,13 +19,7 @@ import { IBooks } from '../books.types';
 import CommonPage from '../../../components/common-page/common-page';
 import { Link, useNavigate } from 'react-router-dom';
 import { parseISO, format } from 'date-fns';
-
-const HeaderElementStyled = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-`;
+import { HeaderElementStyled } from './list.styled';
 
 export default function List() {
   const navigate = useNavigate();
@@ -141,7 +134,6 @@ export default function List() {
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
-
               <TableCell sx={{ fontWeight: 'bold' }}>Genre</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Published Year</TableCell>
               <TableCell align="right" sx={{ fontWeight: 'bold' }}>

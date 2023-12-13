@@ -1,5 +1,4 @@
 import { IFileItem } from '../../services/types';
-
 export interface IBooks {
   id?: string;
   title?: string;

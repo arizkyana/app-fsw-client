@@ -1,12 +1,9 @@
-import { Box, TextField, Switch, Stack, styled } from '@mui/material';
+import { Box, TextField, Switch, Stack } from '@mui/material';
 import CommonPage from '../../../components/common-page/common-page';
 import { CloudUpload } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import useAction from './create.hooks';
-
-const VisuallyHiddenInput = styled('input')`
-  display: none;
-`;
+import { VisuallyHiddenInput } from './create.styled';
 
 export default function Create() {
   const {

@@ -27,15 +27,17 @@ export default function useList() {
     record: IBooks
   ) => {
     e.stopPropagation();
-    try {
-      await axios.delete(`http://localhost:8000/api/books/${record.id}`, {
-        headers: {
-          Authorization: localStorage.getItem('token'),
-        },
-      });
-      await fetchBooks();
-    } catch (error) {
-      console.log('error > ', error);
+    const confirmed = confirm('Are you sure want to delete?');
+    if (confirmed) {
+      try {
+        await axios.delete(`http://localhost:8000/api/books/${record.id}`, {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        });
+      } catch (error) {
+        console.log('error > ', error);
+      }
     }
   };
 
@@ -44,28 +46,27 @@ export default function useList() {
     navigate(`/update/${record.id}`);
   };
 
-  const fetchBooks = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get<IApiResponse<IBooks[]>>(
-        'http://localhost:8000/api/books',
-        {
-          params,
-          headers: {
-            Authorization: localStorage.getItem('token'),
-          },
-        }
-      );
-      setBooks(response.data.data);
-      setMeta(response.data.meta);
-    } catch (error) {
-      console.log('error > ', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get<IApiResponse<IBooks[]>>(
+          'http://localhost:8000/api/books',
+          {
+            params,
+            headers: {
+              Authorization: localStorage.getItem('token'),
+            },
+          }
+        );
+        setBooks(response.data.data);
+        setMeta(response.data.meta);
+      } catch (error) {
+        console.log('error > ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchBooks();
   }, [params]);
 
